@@ -46,7 +46,7 @@ lexicon = {'greeting': ['hi', 'hello', '你好', '嗨', '哈囉'],
            }
 
 ans = {'greeting': 'Hi',
-       'name': 'Ryan Tsung-Yen Hsu\n 徐琮彥',
+       'name': 'Ryan Tsung-Yen Hsu',
        'gender': 'Male',
        'education': 'Master program in CS at NTU',
        'skill': 'Programming and Chatting',
@@ -158,7 +158,7 @@ def mappingMsg(fromMsg, profile):
                         elif k == 'introduce':
                             templateMsg = getIntroTemplate()
 
-    if 'tsung-yen' == fromMsg.lower() or '琮彥' == fromMsg or '徐琮彥' == fromMsg or 'ryan' == fromMsg.lower():
+    if 'tsung-yen' == fromMsg.lower() or 'ryan' == fromMsg.lower():
         retMsg = 'Yes, I am.'
 
     if retMsg != '':
