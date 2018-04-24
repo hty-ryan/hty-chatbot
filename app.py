@@ -130,56 +130,6 @@ def handle_postback(event):
     return
 
 
-def processMsg(fromMsg, profile):
-    '''
-        param1: fromMsg
-                massage from user
-        param2: profile
-                user profile
-    '''
-
-    retMsg = ''
-    retImg = None
-    templateMsg = None
-
-    if 'hi' in fromMsg.lower() or 'hello' in fromMsg.lower() or '你好' in fromMsg or '嗨' in fromMsg or '哈囉' in fromMsg:
-        retMsg = 'Hi ' + profile.display_name
-        templateMsg = getConfirmTemplate()
-    elif 'name' in fromMsg or '名字' in fromMsg or '姓名' in fromMsg:
-        retMsg = 'Ryan Tsung-Yen Hsu\n 徐琮彥'
-    elif 'tsung-yen' == fromMsg.lower() or '琮彥' == fromMsg or '徐琮彥' == fromMsg or 'ryan' == fromMsg.lower():
-        retMsg = 'Yes, I am.'
-    elif 'gender' in fromMsg.lower() or '性別' in fromMsg:
-        retMsg = 'Male'
-    elif 'edu' in fromMsg.lower() or 'school' in fromMsg.lower() or 'study' in fromMsg.lower() or '教育' in fromMsg or '學' in fromMsg:
-        retMsg = 'Master program in CS at NTU'
-        image_link = 'https://bit.ly/2HVXmXB'
-        retImg = ImageSendMessage(image_link, image_link)
-    elif 'skill' in fromMsg.lower() or '技術' in fromMsg or '專長' in fromMsg:
-        retMsg = 'Programming and Chatting'
-    elif 'introduc' in fromMsg.lower() or '介紹' in fromMsg:
-        retMsg = 'Here you go'
-        templateMsg = getIntroTemplate()
-    elif 'age' in fromMsg.lower() or '年齡' in fromMsg or 'liv' in fromMsg.lower() or 'address' in fromMsg.lower() or 'home' in fromMsg.lower() or '家' in fromMsg or '址' in fromMsg or '住' in fromMsg:
-        retMsg = 'I cannot tell you that'
-    elif 'hobby' in fromMsg.lower() or 'interest' in fromMsg.lower() or '興趣' in fromMsg or '嗜好' in fromMsg:
-        retMsg = 'Sports, movies, musics'
-    elif 'sport' in fromMsg.lower() or 'exercise' in fromMsg.lower() or 'outdoor' in fromMsg.lower() or '運動' in fromMsg:
-        retMsg = 'Basketball, swimming'
-    elif 'work' in fromMsg.lower() or 'employ' in fromMsg.lower() or '工作' in fromMsg or '職業' in fromMsg:
-        retMsg = 'I\'m working as a software engineer at HP Enterprise'
-    else:
-        retMsg = profile.display_name + ', I cannot recognize what you just spoke.'
-        templateMsg = getConfirmTemplate()
-
-    if retMsg != '':
-        retMsg = TextSendMessage(retMsg)
-    else:
-        retMsg = None
-
-    return retMsg, retImg, templateMsg
-
-
 def mappingMsg(fromMsg, profile):
     '''
         param1: fromMsg
