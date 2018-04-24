@@ -123,8 +123,8 @@ def processMsg(fromMsg, profile):
         retMsg = 'Hi ' + profile.display_name
         templateMsg = getConfirmTemplate()
     elif 'name' in fromMsg or '名字' in fromMsg or '姓名' in fromMsg:
-        retMsg = 'Ryan Tsung-Yen Hsu\n 徐琮彥'
-    elif 'tsung-yen' == fromMsg.lower() or '琮彥' == fromMsg or '徐琮彥' == fromMsg or 'ryan' == fromMsg.lower():
+        retMsg = 'Ryan Tsung-Yen Hsu\n'
+    elif 'tsung-yen' == fromMsg.lower() or 'ryan' == fromMsg.lower():
         retMsg = 'Yes, I am.'
     elif 'gender' in fromMsg.lower() or '性別' in fromMsg:
         retMsg = 'Male'
