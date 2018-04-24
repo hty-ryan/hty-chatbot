@@ -39,7 +39,7 @@ lexicon = {'greeting': ['hi', 'hello', '你好', '嗨', '哈囉'],
            'education': ['edu', 'school', 'study', '教育', '學', 'course'],
            'skill': ['技術', '技能', '專長', '專業'],
            'introduce': ['introduc', '介紹'],
-           'no comment': ['age', '年齡', 'liv', 'address', 'home', 'place', '家', '址', '地點', '住'],
+           'no comment': ['age', '年齡', 'old', '幾歲', 'liv', 'address', 'home', 'place', '家', '址', '地點', '住'],
            'interest': ['hobb', 'interest', '興趣', '嗜好'],
            'sports': ['sport', 'exercise', 'outdoor', '運動', '體育'],
            'work': ['work', 'employ', '工作', '職業']
