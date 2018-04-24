@@ -29,9 +29,32 @@ line_bot_api = LineBotApi(
 handler = WebhookHandler('192fd7c093da347617159b0d0bc939fb')
 
 # User id
-#USER_ID = 'U61b05ad77f5fc3e49865c1587e0fe29f'
+# USER_ID = 'U61b05ad77f5fc3e49865c1587e0fe29f'
 
 # Listen from /callback 的 Post Request
+
+lexicon = {'greeting': ['hi', 'hello', '你好', '嗨', '哈囉'],
+           'name': ['name', '名字', '姓名'],
+           'gender': ['gender', '性別'],
+           'education': ['edu', 'school', 'study', '教育', '學', 'course'],
+           'skill': ['技術', '技能', '專長', '專業'],
+           'introduce': ['introduc', '介紹'],
+           'no comment': ['age', '年齡', 'liv', 'address', 'home', 'place', '家', '址', '地點', '住'],
+           'interest': ['hobb', 'interest', '興趣', '嗜好'],
+           'sports': ['sport', 'exercise', 'outdoor', '運動', '體育'],
+           'work': ['work', 'employ', '工作', '職業']
+           }
+
+ans = {'greeting': 'Hi',
+       'name': 'Ryan Tsung-Yen Hsu\n 徐琮彥',
+       'gender': 'Male',
+       'education': 'Master program in CS at NTU',
+       'skill': 'Programming and Chatting',
+       'introduce': 'Here you go',
+       'no comment': 'I cannot tell you that',
+       'interest': 'Sports, movies, musics',
+       'sports': 'Basketball, swimming',
+       'work': 'I\'m working as a software engineer at HP Enterprise'}
 
 
 @app.route("/callback", methods=['POST'])
@@ -55,7 +78,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     profile = line_bot_api.get_profile(event.source.user_id)
-    ret_msg, ret_img, ret_template = processMsg(event.message.text, profile)
+    ret_msg, ret_img, ret_template = mappingMsg(event.message.text, profile)
     try:
         if ret_msg != None:
             line_bot_api.reply_message(event.reply_token, ret_msg)
@@ -78,7 +101,7 @@ def handle_message(event):
 @handler.add(PostbackEvent)
 def handle_postback(event):
     profile = line_bot_api.get_profile(event.source.user_id)
-    ret_text, ret_image, template_message = processMsg(
+    ret_text, ret_image, template_message = mappingMsg(
         event.postback.data, profile)
     if 'intro_' in event.postback.data:
         if 'intro_yes' == event.postback.data:
@@ -123,8 +146,8 @@ def processMsg(fromMsg, profile):
         retMsg = 'Hi ' + profile.display_name
         templateMsg = getConfirmTemplate()
     elif 'name' in fromMsg or '名字' in fromMsg or '姓名' in fromMsg:
-        retMsg = 'Ryan Tsung-Yen Hsu\n'
-    elif 'tsung-yen' == fromMsg.lower() or 'ryan' == fromMsg.lower():
+        retMsg = 'Ryan Tsung-Yen Hsu\n 徐琮彥'
+    elif 'tsung-yen' == fromMsg.lower() or '琮彥' == fromMsg or '徐琮彥' == fromMsg or 'ryan' == fromMsg.lower():
         retMsg = 'Yes, I am.'
     elif 'gender' in fromMsg.lower() or '性別' in fromMsg:
         retMsg = 'Male'
@@ -137,12 +160,14 @@ def processMsg(fromMsg, profile):
     elif 'introduc' in fromMsg.lower() or '介紹' in fromMsg:
         retMsg = 'Here you go'
         templateMsg = getIntroTemplate()
-    elif 'age' in fromMsg.lower() or '年齡' in fromMsg or 'liv' in fromMsg.lower() or 'address' in fromMsg.lower() or '地址' in fromMsg or '住' in fromMsg:
+    elif 'age' in fromMsg.lower() or '年齡' in fromMsg or 'liv' in fromMsg.lower() or 'address' in fromMsg.lower() or 'home' in fromMsg.lower() or '家' in fromMsg or '址' in fromMsg or '住' in fromMsg:
         retMsg = 'I cannot tell you that'
     elif 'hobby' in fromMsg.lower() or 'interest' in fromMsg.lower() or '興趣' in fromMsg or '嗜好' in fromMsg:
         retMsg = 'Sports, movies, musics'
     elif 'sport' in fromMsg.lower() or 'exercise' in fromMsg.lower() or 'outdoor' in fromMsg.lower() or '運動' in fromMsg:
         retMsg = 'Basketball, swimming'
+    elif 'work' in fromMsg.lower() or 'employ' in fromMsg.lower() or '工作' in fromMsg or '職業' in fromMsg:
+        retMsg = 'I\'m working as a software engineer at HP Enterprise'
     else:
         retMsg = profile.display_name + ', I cannot recognize what you just spoke.'
         templateMsg = getConfirmTemplate()
@@ -151,6 +176,46 @@ def processMsg(fromMsg, profile):
         retMsg = TextSendMessage(retMsg)
     else:
         retMsg = None
+
+    return retMsg, retImg, templateMsg
+
+
+def mappingMsg(fromMsg, profile):
+    '''
+        param1: fromMsg
+                massage from user
+        param2: profile
+                user profile
+    '''
+
+    retMsg = ''
+    retImg = None
+    templateMsg = None
+
+    for key, value in lexicon.items():
+        for word in value:
+            if word in fromMsg.lower() or word in fromMsg:
+                for k, v in ans.items():
+                    if k == key:
+                        retMsg = v
+
+                        if k == 'greeting':
+                            retMsg = retMsg + ', ' + profile.display_name
+                            templateMsg = getConfirmTemplate()
+                        elif k == 'education':
+                            image_link = 'https://bit.ly/2HVXmXB'
+                            retImg = ImageSendMessage(image_link, image_link)
+                        elif k == 'introduce':
+                            templateMsg = getIntroTemplate()
+
+    if 'tsung-yen' == fromMsg.lower() or '琮彥' == fromMsg or '徐琮彥' == fromMsg or 'ryan' == fromMsg.lower():
+        retMsg = 'Yes, I am.'
+
+    if retMsg != '':
+        retMsg = TextSendMessage(retMsg)
+    else:
+        retMsg = profile.display_name + ', I cannot recognize what you just spoke.'
+        templateMsg = getConfirmTemplate()
 
     return retMsg, retImg, templateMsg
 
